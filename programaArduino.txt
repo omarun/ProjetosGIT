@@ -1,0 +1,46 @@
+//Conectar os pinos:
+//- STEP na porta digital 8 do Arduino
+//- CW_CCW na porta digital 9 do Arduino
+//- ENABLE na porta digital 10 do Arduino
+//- RESET na porta digital 7 do Arduino
+//- HALF/FULL na porta digital 6 do Arduino
+//
+const int STEP = 8;
+const int DIRECTION = 9;
+const int ENABLE = 10;
+const int RESET = 7;
+const int HALF_FULL = 6;
+
+unsigned long intervalo;
+byte dir = true;
+byte step = false;
+
+void setup()
+{
+  pinMode(STEP, OUTPUT);
+  pinMode(DIRECTION, OUTPUT);
+  pinMode(ENABLE, OUTPUT);
+  pinMode(RESET, OUTPUT);
+  pinMode(HALF_FULL, OUTPUT);
+  digitalWrite(STEP, LOW);
+  digitalWrite(DIRECTION, HIGH);
+  digitalWrite(ENABLE, HIGH);
+  digitalWrite(RESET, HIGH); // Pulse Low = reset ;; High = normal operation
+  digitalWrite(HALF_FULL, LOW); // Low = full step ;; High = half step
+}
+
+void loop()
+{
+  intervalo = millis() + 1000;
+  while(intervalo > millis())
+  {
+    step = !step;
+    digitalWrite(STEP, step);
+    delayMicroseconds(750); // Maior velocidade possivel
+                                         // nao coloque valores menores que 750
+                                         // senao o motor vai ressonar e não vai girar
+  }
+  dir = !dir;
+  digitalWrite(DIRECTION, dir);
+}
+
